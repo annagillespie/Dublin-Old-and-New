@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title>Dublin Old and New</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.38.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.38.0/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        body { margin:0; padding:0; }
+        #map { position:absolute; top:0; bottom:0; width:100%; }
+    </style>
+</head>
+<body>
+
+<div id='map'></div>
+<script>
+mapboxgl.accessToken = 'pk.eyJ1IjoiYW5uYWV2ZXJjYW0iLCJhIjoiY2ozeWc3ejRqMDAxMTJxbXZmcjdkNHJzMSJ9.BcsGssxb33_IEBtpIPdlMA';
+var map = new mapboxgl.Map({
+    container: 'map', // container id
+    style: 'mapbox://styles/annaevercam/cj45h6uqa069e2spa3fsa4kxr', //stylesheet location
+    center: [-6.260, 53.351], // starting position
+    zoom: 14.2 // starting zoom
+});
+map.on('click', function(e) {
+  var features = map.queryRenderedFeatures(e.point, {
+    layers: ['dublin-map'] // replace this with the name of the layer
+  });
+
+  if (!features.length) {
+    return;
+  }
+
+  var feature = features[0];
+
+  var popup = new mapboxgl.Popup({ offset: [0, -15] })
+    .setLngLat(feature.geometry.coordinates)
+    .setHTML('<h1><a href="'+ feature.properties.URL +'" target="_blank">' + feature.properties.Name + '</a></h1><p>' + feature.properties.Iframe + '</p><p>' + feature.properties.Space + '</p>')
+    .setLngLat(feature.geometry.coordinates)
+    .addTo(map);
+});
+</script>
+
+</body>
+</html>
